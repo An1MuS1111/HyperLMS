@@ -11,6 +11,11 @@ app.get('/', (req, res) => {
     res.send("Hello")
 })
 
+
+const usersRouter = require('./routes/users')
+
+app.use('/users', usersRouter)
+
 PORT = 4444;
 app.listen(PORT, () => {
     console.log(`Server at http://localhost:${PORT}`);

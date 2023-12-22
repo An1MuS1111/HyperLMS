@@ -1,9 +1,9 @@
-import Login from './pages/Login/Login.jsx'
+import Review from "./pages/Review/Review"
 
 export default function App() {
     return (
         <>
-            <Login />
+            <Review />
         </>
     )
 }

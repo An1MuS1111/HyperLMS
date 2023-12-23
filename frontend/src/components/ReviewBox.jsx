@@ -12,10 +12,10 @@ export default function ReviewBox() {
             <div className='review-main-section'>
                 <div className='review-details'>
                     <div className='review-heading'><p>More details</p></div>
-                    <div><p>0 - Never</p>
-                        <p>0 - Sometimes</p>
-                        <p>0 - Most of the times</p>
-                        <p>0 - Everytime</p>
+                    <div className='review-details-section'><p>0 - Never</p>
+                        <p>1 - Sometimes</p>
+                        <p>2 - Most of the times</p>
+                        <p>3 - Everytime</p>
                     </div>
 
                 </div>

@@ -2,11 +2,17 @@ import './ReviewBox.css'
 
 
 
-export default function ReviewForm() {
+export default function ReviewForm(props) {
     return (
         <>
+
             <div><p>ARSHAD PARVEZ DIPTO</p></div>
-            <input type="text" />
+
+            <form action="">
+                <input type="text" />
+                <button>Submit</button>
+            </form>
+
         </>
     )
 }

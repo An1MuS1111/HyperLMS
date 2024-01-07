@@ -1,0 +1,13 @@
+POST http://localhost:4444/assessments/add
+
+Content-Type: application/json
+
+{
+        "assessmentId" :  01,
+        "questions" : [
+                {
+                        "questionId" : 01,
+                        "question" : "Nice post."
+                }
+        ]
+}

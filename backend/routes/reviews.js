@@ -36,13 +36,13 @@ router.route('/add').post((req, res) => {
 })
 
 router.route('/:id').get((req, res) => {
-    Team.findById(req.params.id)
-        .then(team => res.json(team))
+    Review.findById(req.params.id)
+        .then(review => res.json(review))
         .catch(err => res.status(400).json('Error: ' + err));
 })
 
 router.route('/:id').delete((req, res) => {
-    Team.findByIdAndDelete(req.params.id)
+    review.findByIdAndDelete(req.params.id)
         .then(() => res.json('Review deleted.'))
         .catch(err => res.status(400).json('Error: ' + err));
 })
@@ -60,7 +60,7 @@ router.route('/update/:id').post((req, res) => {
             review.comments = req.body.comments;
 
 
-            team.save()
+            review.save()
                 .then(() => res.json('Review updated!'))
                 .catch(err => res.status(400).json('Error: ' + err))
         })

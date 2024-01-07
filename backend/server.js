@@ -21,9 +21,11 @@ connection.once('open', () => console.log('Mongodb database connection extablish
 const usersRouter = require('./routes/users')
 const teamsRouter = require('./routes/teams')
 const reviewsRouter = require('./routes/reviews')
+const assessmentsRouter = require('./routes/assessments')
 app.use('/users', usersRouter)
 app.use('/teams', teamsRouter)
 app.use('/reviews', reviewsRouter)
+app.use('/assessments', assessmentsRouter)
 
 PORT = 4444;
 app.listen(PORT, () => {

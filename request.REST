@@ -1,13 +1,26 @@
-POST http://localhost:4444/assessments/add
+POST http://localhost:4444/users/add
 
 Content-Type: application/json
-
 {
-        "assessmentId" :  01,
-        "questions" : [
-                {
-                        "questionId" : 01,
-                        "question" : "Nice post."
-                }
-        ]
+    "userId" : "01",
+    "username" : "khalid",
+    "email" : "khalidrafi1111@gmail.com"
 }
+
+
+
+
+
+# {
+#         "assessmentId" :  01,
+#         "questions" : [
+#                 {
+#                         "questionId" : 01,
+#                         "question" : "Nice post."
+#                 },
+#                 {
+#                     "questionId" : 02,
+#                     "question" : "Hello World"
+#                 }
+#         ]
+# }

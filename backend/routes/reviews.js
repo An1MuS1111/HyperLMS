@@ -42,7 +42,7 @@ router.route('/:id').get((req, res) => {
 })
 
 router.route('/:id').delete((req, res) => {
-    review.findByIdAndDelete(req.params.id)
+    Review.findByIdAndDelete(req.params.id)
         .then(() => res.json('Review deleted.'))
         .catch(err => res.status(400).json('Error: ' + err));
 })

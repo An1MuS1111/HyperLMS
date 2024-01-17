@@ -22,10 +22,12 @@ const usersRouter = require('./routes/users')
 const teamsRouter = require('./routes/teams')
 const reviewsRouter = require('./routes/reviews')
 const assessmentsRouter = require('./routes/assessments')
+const peerReviewsRouter = require('./routes/peerReviews')
 app.use('/users', usersRouter)
 app.use('/teams', teamsRouter)
 app.use('/reviews', reviewsRouter)
 app.use('/assessments', assessmentsRouter)
+app.use('/peerReviews', peerReviewsRouter)
 
 PORT = 4444;
 app.listen(PORT, () => {

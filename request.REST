@@ -11,16 +11,58 @@ Content-Type: application/json
 
 
 
-# {
-#         "assessmentId" :  01,
-#         "questions" : [
-#                 {
-#                         "questionId" : 01,
-#                         "question" : "Nice post."
-#                 },
-#                 {
-#                     "questionId" : 02,
-#                     "question" : "Hello World"
-#                 }
-#         ]
-# }
+{
+        "assessmentId" :  01,
+        "questions" : [
+                {
+                        "questionId" : 01,
+                        "question" : "Nice post."
+                },
+                {
+                    "questionId" : 02,
+                    "question" : "Hello World"
+                }
+        ]
+}
+
+
+
+
+
+{
+    "assessmentName": "Assessment 1",
+    "assessmentId": "xxxxxx",
+    "reviewerName" : "Khalid",
+    "reviewerUserId" : "xxxx",
+    "teamId": "xxxx",
+    "reviews" : [
+        {
+            "questionId" : 01,
+            "ratings" : [{
+                "khalid" : ["1", "2", "3"]
+            }]
+        }
+    ]
+}
+
+
+
+
+
+
+
+{
+    "reviewName": "",
+    "reviewDetails" : "",
+    "questions": [
+        {
+            "questionId": 101,
+            "question": "What is your favorite color?"
+        },
+        {
+            "questionId": 102,
+            "question": "How many hours do you sleep on average?"
+        }
+    ],
+    "teams" : ["10837840984", "38974974", "97497973"]
+}

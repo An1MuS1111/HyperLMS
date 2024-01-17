@@ -3,11 +3,11 @@ import './ReviewBox.css'
 
 
 
-export default function ReviewBox() {
+export default function ReviewBox(props) {
     return (
         <>
             <div className='heading-section'>
-                <p className='question-heading'>Question 1: [Attendance] - This team member showed up for the teams meetings, and stayed involved for the whole session.</p>
+                <p className='question-heading'>{props.question}</p>
             </div>
             <div className='review-main-section'>
                 <div className='review-details'>

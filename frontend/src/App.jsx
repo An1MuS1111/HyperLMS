@@ -8,10 +8,8 @@ export default function App() {
     return (<>
 
         <Router>
-            <div>
-                <ManagePeerReview />
-            </div>
             <Routes>
+                <Route path="/" exact element={<ManagePeerReview />} />
                 <Route path="/assessments/:assessment_id/:team_id/:user_id" exact element={<Review />} />
                 <Route path="/addPeerReview" exact element={<AddPeerReview />} />
                 <Route path='/edit/:id' exact element={<EditPeerReview />} />

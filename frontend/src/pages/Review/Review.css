@@ -1,0 +1,57 @@
+/* Add your styles for the overall layout */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header styles */
+h1 {
+    color: #333;
+}
+
+/* Question styles */
+.question {
+    margin-bottom: 10px;
+}
+
+/* Team member styles */
+.team-member {
+    margin-bottom: 15px;
+}
+
+/* Input styles */
+input {
+    width: 50px;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+/* Submit button styles */
+button {
+    padding: 10px 15px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Loading message styles */
+.loading {
+    text-align: center;
+    margin-top: 20px;
+    font-style: italic;
+    color: #888;
+}

@@ -1,141 +1,106 @@
+
+
+
 import './Review.css'
-import ReviewBox from '../../components/ReviewBox'
-// import { useParams } from 'react-router-dom'
-// import axios from 'axios'
-// import { useEffect, useState } from 'react';
-
-
-// export default function Review() {
-
-//     const { assessment_id, team_id, user_id } = useParams();
-//     const [isLoading, setIsLoading] = useState(true)
-//     const [assessment, setAssessment] = useState({})
-//     const [team, setTeam] = useState()
-//     const [user, setUser] = useState()
-
-//     useEffect(() => {
-
-//         console.log("assessment_id: " + assessment_id)
-//         console.log("team_id: " + team_id)
-//         console.log("user_id: " + user_id)
-//         fetchAssessment()
-//         fetchTeam()
-//         fetchUser()
-//         console.log("This is......" + assessment)
-
-//     }, [])
-
-//     // fetching starts here
-//     const fetchAssessment = () => {
-//         axios.get('http://localhost:4444/assessments/' + assessment_id)
-//             .then(({ data }) => console.log(data))
-
-
-//     }
-
-//     const fetchTeam = () => {
-//         axios.get('http://localhost:4444/teams/' + team_id)
-//             .then(response => console.log(response.data))
-//     }
-
-//     const fetchUser = () => {
-//         axios.get('http://localhost:4444/users/' + user_id)
-//             .then(response => console.log(response.data))
-//     }
-
-//     return (
-//         <ReviewBox />
-//     )
-// }
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import ReviewBox from '../../components/ReviewBox';
 
 const Review = () => {
+    const { peerReviewId, teamId, userId } = useParams();
+    const [peerReview, setPeerReview] = useState(null);
+    const [team, setTeam] = useState(null);
+    const [user, setUser] = useState(null);
+    const [users, setUsers] = useState(null)
+    const [ratings, setRatings] = useState({});
 
-    const assessment = {
-        "assessmentId": 1,
-        "questions": [
-            {
-                "questionId": 101,
-                "question": "What is your favorite color?"
-            },
-            {
-                "questionId": 102,
-                "question": "How many hours do you sleep on average?"
-            }
-        ]
-    }
+    useEffect(() => {
+        // Fetch peer review data
+        axios.get(`http://localhost:4444/peerReviews/${peerReviewId}`)
+            .then(response => setPeerReview(response.data))
+            .catch(error => console.error(error));
 
-    const team = {
-        "teamId": "T002",
-        "teamName": "Good Team",
-        "members": ["659ef24319285740f5962580", "659ef42b19285740f5962585"]
-    }
+        // Fetch team data
+        axios.get(`http://localhost:4444/teams/${teamId}`)
+            .then(response => setTeam(response.data))
+            .catch(error => console.error(error));
 
+        // Fetch user data
+        axios.get(`http://localhost:4444/users/${userId}`)
+            .then(response => setUser(response.data))
+            .catch(error => console.error(error));
 
-    const user = {
-        "userId": "01",
-        "username": "khalid",
-        "email": "khalidrafi1111@gmail.com"
-    }
+        axios.get(`http://localhost:4444/users`)
+            .then(response => setUsers(response.data))
+            .catch(error => console.error(error));
 
-    const [reviews, setReviews] = useState([]);
+    }, [peerReviewId, teamId, userId]);
 
-    const handleInputChange = (questionId, memberId, value) => {
-        const updatedReviews = [...reviews];
-        const existingReviewIndex = updatedReviews.findIndex(
-            (review) => review.questionId === questionId && review.reviewedUserId === memberId
-        );
-
-        if (existingReviewIndex !== -1) {
-            updatedReviews[existingReviewIndex].rating = value;
-        } else {
-            updatedReviews.push({
-                assessmentId: assessment.assessmentId,
-                reviewId: generateReviewId(), // Implement a function to generate a unique reviewId
-                reviewerId: user.userId,
-                reviewedUserId: memberId,
-                teamId: team.teamId,
-                rating: value,
-                comments: '',
-            });
-        }
-
-        setReviews(updatedReviews);
+    const handleRatingChange = (memberId, questionId, rating) => {
+        setRatings(prevRatings => ({
+            ...prevRatings,
+            [`${memberId}_${questionId}`]: rating,
+        }));
     };
 
     const handleSubmit = () => {
-        // Perform API requests for each review
-        reviews.forEach((review) => {
-            // Implement your API request logic here
-            console.log('Sending API request for review:', review);
-        });
+        // Prepare data for the POST request
+        const reviewData = {
 
-        // Optionally, you can reset the state or perform other actions after submission
-        setReviews([]);
+            peerReviewId,
+            teamId,
+            reviews: Object.keys(ratings).map(key => {
+                const [memberId, questionId] = key.split('_');
+                return {
+                    reviewerId: userId,
+                    reviewedUserId: memberId,
+                    ratings: [ratings[key]],
+                };
+            }),
+        };
+
+        // POST request to submit the reviews
+        axios.post('http://localhost:4444/reviews/add', [reviewData])
+            .then(response => console.log(response.data))
+            .catch(error => console.error(error));
     };
+
+    if (!peerReview || !team || !user) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div>
-            <h2>{assessment.questions.length} Questions</h2>
-            {assessment.questions.map((question) => (
+            <h1>{peerReview.reviewName}</h1>
+            <p>{peerReview.reviewDetails}</p>
+            {peerReview.questions.map(question => (
+
+
                 <div key={question.questionId}>
 
-                    <ReviewBox question={question.question} />
-                    {team.members.map((memberId) => (
-                        <div key={memberId}>
-                            <label>
-                                {`Member ${memberId}: `}
+                    <ReviewBox questionId={question.questionId} question={question.question} />
+
+                    {/* <p>{`Question: ${question.question}`}</p> */}
+                    {team.members.map(memberId => (
+                        memberId !== userId && (
+                            <div key={memberId}>
+                                {/* <p>{`Team Member: ${memberId}`}</p> */}
+                                <p>{`Team Member: ${users.find(user => user._id === memberId)?.username || ''}`}</p>
+
                                 <input
                                     type="number"
-                                    min="1"
-                                    max="12"
-                                    onChange={(e) => handleInputChange(question.questionId, memberId, e.target.value)}
+                                    min="0"
+                                    max="3"
+                                    value={ratings[`${memberId}_${question.questionId}`] || ''}
+                                    onChange={(e) => handleRatingChange(memberId, question.questionId, e.target.value)}
                                 />
-                            </label>
-                        </div>
+                            </div>
+                        )
                     ))}
                 </div>
             ))}
-            <button onClick={handleSubmit}>Submit</button>
+            <button onClick={handleSubmit}>Submit Reviews</button>
         </div>
     );
 };

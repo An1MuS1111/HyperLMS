@@ -7,7 +7,8 @@ export default function ReviewBox(props) {
     return (
         <>
             <div className='heading-section'>
-                <p className='question-heading'>{props.question}</p>
+                {/* <p className='question-heading'>{props.question}</p> */}
+                <p className='question-heading'>{`[Question - ${props.questionId}] - ${props.question}`}</p>
             </div>
             <div className='review-main-section'>
                 <div className='review-details'>

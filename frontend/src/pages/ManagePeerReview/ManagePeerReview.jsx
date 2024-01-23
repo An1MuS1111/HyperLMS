@@ -38,9 +38,10 @@ const ManagePeerReview = () => {
 
     return (
         <>
-            <Link to="/addPeerReview">
+            <button><Link to="/addPeerReview">
                 Add Peer review
-            </Link>
+            </Link></button>
+
             <div>
                 <h2>Peer Reviews</h2>
                 <table>

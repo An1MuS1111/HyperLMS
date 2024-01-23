@@ -10,7 +10,8 @@ export default function App() {
         <Router>
             <Routes>
                 <Route path="/" exact element={<ManagePeerReview />} />
-                <Route path="/assessments/:assessment_id/:team_id/:user_id" exact element={<Review />} />
+                {/* <Route path="/peerReviews/:peerReviewId/:userId" exact element={<Review />} /> */}
+                <Route path="/peerReviews/:peerReviewId/:teamId/:userId" exact element={<Review />} />
                 <Route path="/addPeerReview" exact element={<AddPeerReview />} />
                 <Route path='/edit/:id' exact element={<EditPeerReview />} />
 

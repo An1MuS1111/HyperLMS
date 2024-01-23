@@ -60,18 +60,6 @@ const EditPeerReview = () => {
         });
     };
 
-    // const handleQuestionChange = (index, value) => {
-    //     const updatedQuestions = [...formData.questions];
-    //     updatedQuestions[index] = {
-    //         ...updatedQuestions[index],
-    //         question: value,
-    //     };
-
-    //     setFormData({
-    //         ...formData,
-    //         questions: updatedQuestions,
-    //     });
-    // };
 
     const handleQuestionChange = (index, value) => {
         setFormData((prevData) => {
@@ -207,7 +195,7 @@ const EditPeerReview = () => {
             </div>
 
 
-            <button type="submit">Submit</button>
+            <button type="submit">Update</button>
         </form>
     );
 };

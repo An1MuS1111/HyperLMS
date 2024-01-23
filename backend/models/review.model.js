@@ -1,21 +1,18 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-
-
 // Review Schema
 const reviewSchema = new Schema({
-    assessmentId: { type: String, required: true, unique: true },
-    reviewId: { type: String, required: true, unique: true },
-    reviewerId: { type: String, required: true },
-    reviewedUserId: { type: String, required: true },
+    peerReviewId: { type: String, required: true },
     teamId: { type: String, required: true },
-    rating: { type: Number, required: true },
-    comments: { type: String }
+    reviews: [
+        {
+            reviewerId: { type: String, required: true },
+            reviewedUserId: { type: String, required: true },
+            ratings: [{ type: Number, required: true }]
+        }
+    ]
 });
 
-
-
 const Review = mongoose.model('Review', reviewSchema);
-module.exports = Review
-
+module.exports = Review;

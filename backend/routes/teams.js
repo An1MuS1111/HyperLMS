@@ -9,14 +9,14 @@ router.route('/').get((req, res) => {
 })
 
 router.route('/add').post((req, res) => {
-    const teamId = req.body.teamId;
+
     const teamName = req.body.teamName;
     const members = req.body.members;
 
 
 
     const newTeam = new Team({
-        teamId,
+
         teamName,
         members
     });
@@ -42,7 +42,7 @@ router.route('/:id').delete((req, res) => {
 router.route('/update/:id').post((req, res) => {
     Team.findById(req.params.id)
         .then(team => {
-            team.teamId = req.body.teamId;
+
             team.teamName = req.body.teamName;
             team.members = req.body.members;
 

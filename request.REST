@@ -66,3 +66,31 @@ Content-Type: application/json
     ],
     "teams" : ["10837840984", "38974974", "97497973"]
 }
+
+
+
+
+
+
+
+
+
+
+{
+    "peerReviewId": "",
+    "teamId": "",
+    "reviews": [
+        {
+            "reviewerId": "",
+            "reviewedUserId": "",
+            "ratings": ["1", "2", "3"]
+
+        },{
+            "reviewerId": "",
+            "reviewedUserId": "",
+            "ratings": ["1", "2", "3"]
+
+        },
+
+    ]
+}

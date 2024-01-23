@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom'; // Import useParams from react-router-dom
+import { useParams } from 'react-router-dom';
 
 const EditPeerReview = () => {
-    const { id } = useParams(); // Use useParams to get the ID from the URL
+    const { id } = useParams();
 
     const [formData, setFormData] = useState({
         reviewName: '',
@@ -14,9 +14,9 @@ const EditPeerReview = () => {
     });
 
     const [teamsList, setTeamsList] = useState([]);
+    const [addedTeams, setAddedTeams] = useState([]);
 
     useEffect(() => {
-        // Fetch existing peer review data based on ID from the URL
         axios.get(`http://localhost:4444/peerReviews/${id}`)
             .then(response => {
                 const { reviewName, reviewDetails, questions, teams } = response.data;
@@ -30,17 +30,27 @@ const EditPeerReview = () => {
             })
             .catch(error => console.error('Error fetching peer review data:', error));
 
-        // Fetch teams on component mount
         axios.get('http://localhost:4444/teams')
             .then(response => setTeamsList(response.data))
             .catch(error => console.error('Error fetching teams:', error));
     }, [id]);
 
     const handleTeamAdd = (teamId) => {
+        if (!formData.teams.includes(teamId) && !addedTeams.includes(teamId)) {
+            setFormData(prevData => ({
+                ...prevData,
+                teams: [...prevData.teams, teamId],
+            }));
+            setAddedTeams(prevTeams => [...prevTeams, teamId]);
+        }
+    };
+
+    const handleTeamRemove = (teamId) => {
         setFormData(prevData => ({
             ...prevData,
-            teams: [...prevData.teams, teamId],
+            teams: prevData.teams.filter(id => id !== teamId),
         }));
+        setAddedTeams(prevTeams => prevTeams.filter(id => id !== teamId));
     };
 
     const handleChange = (e) => {
@@ -75,7 +85,7 @@ const EditPeerReview = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Prepare object for API request
+
         const apiRequestData = {
             reviewName: formData.reviewName,
             reviewDetails: formData.reviewDetails,
@@ -83,14 +93,11 @@ const EditPeerReview = () => {
             teams: formData.teams,
         };
 
-        // Send API request for updating peer review
         axios.post(`http://localhost:4444/peerReviews/update/${id}`, apiRequestData)
             .then(response => {
-                // Handle success
                 console.log('API Response:', response.data);
             })
             .catch(error => {
-                // Handle error
                 console.error('API Error:', error);
             });
     };
@@ -113,14 +120,17 @@ const EditPeerReview = () => {
     };
 
     const renderTeamsInputs = () => {
-        const teamInputs = formData.teams.map((team, index) => (
+        const teamInputs = formData.teams.map((teamId, index) => (
             <div key={index}>
                 <label>{`Team ${index + 1}:`}</label>
                 <input
                     type="text"
-                    value={team}
-                    onChange={(e) => handleTeamChange(index, e.target.value)}
+                    value={teamsList.find(team => team._id === teamId)?.teamName || ''}
+                    readOnly
                 />
+                <button type="button" onClick={() => handleTeamRemove(teamId)}>
+                    Remove
+                </button>
             </div>
         ));
         return teamInputs;
@@ -156,7 +166,7 @@ const EditPeerReview = () => {
                 />
             </div>
             {renderQuestionsInputs()}
-            {/* {renderTeamsInputs()} */}
+
 
 
             <h3>Select Teams:</h3>
@@ -176,7 +186,8 @@ const EditPeerReview = () => {
             </table>
 
             <div>
-                Team added: {formData.teams.map(teamId => teamsList.find(team => team._id === teamId)?.teamName).join(', ')}
+                <h3>Selected Teams:</h3>
+                {renderTeamsInputs()}
             </div>
 
 

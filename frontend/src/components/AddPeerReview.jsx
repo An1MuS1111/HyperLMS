@@ -1,7 +1,8 @@
 
-
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import './AddPeerReview.css'
+
 
 const AddPeerReview = () => {
     const [formData, setFormData] = useState({
@@ -13,19 +14,31 @@ const AddPeerReview = () => {
     });
 
     const [teamsList, setTeamsList] = useState([]);
+    const [addedTeams, setAddedTeams] = useState([]);
 
     useEffect(() => {
-        // Fetch teams on component mount
+
+
         axios.get('http://localhost:4444/teams')
             .then(response => setTeamsList(response.data))
             .catch(error => console.error('Error fetching teams:', error));
     }, []);
 
     const handleTeamAdd = (teamId) => {
+        if (!formData.teams.includes(teamId) && !addedTeams.includes(teamId)) {
+            setFormData(prevData => ({
+                ...prevData,
+                teams: [...prevData.teams, teamId],
+            }));
+        }
+    };
+
+    const handleTeamRemove = (teamId) => {
         setFormData(prevData => ({
             ...prevData,
-            teams: [...prevData.teams, teamId],
+            teams: prevData.teams.filter(id => id !== teamId),
         }));
+        setAddedTeams(prevTeams => prevTeams.filter(id => id !== teamId));
     };
 
     const handleChange = (e) => {
@@ -48,47 +61,29 @@ const AddPeerReview = () => {
         });
     };
 
-    const handleTeamChange = (index, value) => {
-        const updatedTeams = [...formData.teams];
-        updatedTeams[index] = value;
-
-        setFormData({
-            ...formData,
-            teams: updatedTeams,
-        });
-    };
-
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-
-    //     try {
-    //         // Make the API request with axios
-    //         const response = await axios.post('http://localhost:4444/apiname/add', formData);
-    //         console.log(response.data); // Handle the response accordingly
-    //     } catch (error) {
-    //         console.error('Error submitting form:', error);
-    //     }
-    // };
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Prepare object for API request
+
         const apiRequestData = {
             reviewName: formData.reviewName,
             reviewDetails: formData.reviewDetails,
             questions: formData.questions,
             teams: formData.teams,
         };
-
         console.log(apiRequestData)
-        // Send API request
         axios.post('http://localhost:4444/peerReviews/add', apiRequestData)
             .then(response => {
-                // Handle success
                 console.log('API Response:', response.data);
+                // Reset form after successful submission
+                setFormData({
+                    reviewName: '',
+                    reviewDetails: '',
+                    numQuestions: 0,
+                    questions: [],
+                    teams: [],
+                });
             })
             .catch(error => {
-                // Handle error
                 console.error('API Error:', error);
             });
     };
@@ -111,14 +106,18 @@ const AddPeerReview = () => {
     };
 
     const renderTeamsInputs = () => {
-        const teamInputs = formData.teams.map((team, index) => (
+        const teamInputs = formData.teams.map((teamId, index) => (
             <div key={index}>
                 <label>{`Team ${index + 1}:`}</label>
                 <input
                     type="text"
-                    value={team}
-                    onChange={(e) => handleTeamChange(index, e.target.value)}
+                    value={teamsList.find(team => team._id === teamId)?.teamName || ''}
+                    readOnly
                 />
+
+                <button type="button" onClick={() => handleTeamRemove(teamId)}>
+                    Remove
+                </button>
             </div>
         ));
         return teamInputs;
@@ -154,8 +153,6 @@ const AddPeerReview = () => {
                 />
             </div>
             {renderQuestionsInputs()}
-            {/* {renderTeamsInputs()} */}
-
 
             <h3>Select Teams:</h3>
             <table>
@@ -164,7 +161,7 @@ const AddPeerReview = () => {
                         <tr key={team._id}>
                             <td>{team.teamName}</td>
                             <td>
-                                <button onClick={() => handleTeamAdd(team._id)}>
+                                <button type="button" onClick={() => handleTeamAdd(team._id)}>
                                     Add
                                 </button>
                             </td>
@@ -174,9 +171,9 @@ const AddPeerReview = () => {
             </table>
 
             <div>
-                Team added: {formData.teams.map(teamId => teamsList.find(team => team._id === teamId)?.teamName).join(', ')}
+                <h3>Selected Teams:</h3>
+                {renderTeamsInputs()}
             </div>
-
 
             <button type="submit">Submit</button>
         </form>
@@ -184,135 +181,3 @@ const AddPeerReview = () => {
 };
 
 export default AddPeerReview;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ***
-// Last part last part last part
-// ***
-
-
-
-
-// import { useState, useEffect } from 'react';
-// import axios from 'axios';
-
-// const ManagePeerReview = () => {
-//     const [formData, setFormData] = useState({
-//         reviewName: '',
-//         reviewDetails: '',
-//         questions: [],
-//         teams: [],
-//     });
-
-//     const [teamsList, setTeamsList] = useState([]);
-
-//     useEffect(() => {
-//         // Fetch teams on component mount
-//         axios.get('http://localhost:4444/teams')
-//             .then(response => setTeamsList(response.data))
-//             .catch(error => console.error('Error fetching teams:', error));
-//     }, []);
-
-//     const handleQuestionCountChange = (count) => {
-//         const questionsArray = Array.from({ length: count }, (_, index) => ({
-//             questionId: 100 + index, // You can adjust the starting questionId as needed
-//             question: '',
-//         }));
-//         setFormData(prevData => ({
-//             ...prevData,
-//             questions: questionsArray,
-//         }));
-//     };
-
-//     const handleTeamAdd = (teamId) => {
-//         setFormData(prevData => ({
-//             ...prevData,
-//             teams: [...prevData.teams, teamId],
-//         }));
-//     };
-
-//     const handleSubmit = () => {
-//         // Prepare object for API request
-//         const apiRequestData = {
-//             reviewName: formData.reviewName,
-//             reviewDetails: formData.reviewDetails,
-//             questions: formData.questions,
-//             teams: formData.teams,
-//         };
-
-//         // Send API request
-//         axios.post('YOUR_API_ENDPOINT', apiRequestData)
-//             .then(response => {
-//                 // Handle success
-//                 console.log('API Response:', response.data);
-//             })
-//             .catch(error => {
-//                 // Handle error
-//                 console.error('API Error:', error);
-//             });
-//     };
-
-//     return (
-//         <div>
-//             <label>Peer Review Name:
-//                 <input
-//                     type="text"
-//                     value={formData.reviewName}
-//                     onChange={(e) => setFormData({ ...formData, reviewName: e.target.value })}
-//                 />
-//             </label>
-
-//             <label>Peer Review Details:
-//                 <input
-//                     type="text"
-//                     value={formData.reviewDetails}
-//                     onChange={(e) => setFormData({ ...formData, reviewDetails: e.target.value })}
-//                 />
-//             </label>
-
-//             <label>Number of Questions:
-//                 <input
-//                     type="number"
-//                     value={formData.questions.length}
-//                     onChange={(e) => handleQuestionCountChange(e.target.value)}
-//                 />
-//             </label>
-
-//             <h3>Select Teams:</h3>
-//             <table>
-//                 <tbody>
-//                     {teamsList.map(team => (
-//                         <tr key={team._id}>
-//                             <td>{team.teamName}</td>
-//                             <td>
-//                                 <button onClick={() => handleTeamAdd(team._id)}>
-//                                     Add
-//                                 </button>
-//                             </td>
-//                         </tr>
-//                     ))}
-//                 </tbody>
-//             </table>
-
-//             <div>
-//                 Team added: {formData.teams.map(teamId => teamsList.find(team => team._id === teamId)?.teamName).join(', ')}
-//             </div>
-
-//             <button onClick={handleSubmit}>Submit</button>
-//         </div>
-//     );
-// };
-
-// export default ManagePeerReview;

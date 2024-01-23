@@ -60,16 +60,32 @@ const EditPeerReview = () => {
         });
     };
 
-    const handleQuestionChange = (index, value) => {
-        const updatedQuestions = [...formData.questions];
-        updatedQuestions[index] = {
-            ...updatedQuestions[index],
-            question: value,
-        };
+    // const handleQuestionChange = (index, value) => {
+    //     const updatedQuestions = [...formData.questions];
+    //     updatedQuestions[index] = {
+    //         ...updatedQuestions[index],
+    //         question: value,
+    //     };
 
-        setFormData({
-            ...formData,
-            questions: updatedQuestions,
+    //     setFormData({
+    //         ...formData,
+    //         questions: updatedQuestions,
+    //     });
+    // };
+
+    const handleQuestionChange = (index, value) => {
+        setFormData((prevData) => {
+            const updatedQuestions = [...prevData.questions];
+            updatedQuestions[index] = {
+                ...updatedQuestions[index],
+                questionId: index + 1, // Assuming questionId starts from 1
+                question: value,
+            };
+
+            return {
+                ...prevData,
+                questions: updatedQuestions,
+            };
         });
     };
 
@@ -92,7 +108,7 @@ const EditPeerReview = () => {
             questions: formData.questions,
             teams: formData.teams,
         };
-
+        console.log(apiRequestData)
         axios.post(`http://localhost:4444/peerReviews/update/${id}`, apiRequestData)
             .then(response => {
                 console.log('API Response:', response.data);

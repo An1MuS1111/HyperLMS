@@ -48,16 +48,21 @@ const AddPeerReview = () => {
         });
     };
 
-    const handleQuestionChange = (index, value) => {
-        const updatedQuestions = [...formData.questions];
-        updatedQuestions[index] = {
-            ...updatedQuestions[index],
-            question: value,
-        };
 
-        setFormData({
-            ...formData,
-            questions: updatedQuestions,
+
+    const handleQuestionChange = (index, value) => {
+        setFormData((prevData) => {
+            const updatedQuestions = [...prevData.questions];
+            updatedQuestions[index] = {
+                ...updatedQuestions[index],
+                questionId: index + 1, // Assuming questionId starts from 1
+                question: value,
+            };
+
+            return {
+                ...prevData,
+                questions: updatedQuestions,
+            };
         });
     };
 

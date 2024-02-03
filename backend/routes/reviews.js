@@ -9,6 +9,23 @@ router.route('/').get((req, res) => {
 });
 
 // Add a new review
+// router.route('/add').post((req, res) => {
+//     const peerReviewId = req.body.peerReviewId;
+//     const teamId = req.body.teamId;
+//     const reviews = req.body.reviews;
+
+//     const newReview = new Review({
+//         peerReviewId,
+//         teamId,
+//         reviews,
+//     });
+
+//     newReview.save()
+//         .then(() => res.json('Review added!'))
+//         .catch(err => res.status(400).json('Error: ' + err));
+// });
+
+// Add a new review
 router.route('/add').post((req, res) => {
     const peerReviewId = req.body.peerReviewId;
     const teamId = req.body.teamId;
@@ -21,7 +38,7 @@ router.route('/add').post((req, res) => {
     });
 
     newReview.save()
-        .then(() => res.json('Review added!'))
+        .then(savedReview => res.json({ message: 'Review added!', reviewId: savedReview._id }))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
